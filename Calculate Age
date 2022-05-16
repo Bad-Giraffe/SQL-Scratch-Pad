@@ -1,0 +1,23 @@
+ALTER FUNCTION [dbo].[CalculateAge]
+(
+	@BirthDate DATETIME
+,	@CurrentDate DATETIME
+)
+RETURNS INT
+
+AS
+BEGIN
+
+	IF @BirthDate > @CurrentDate
+		RETURN 0;
+
+	DECLARE @Age INT;
+	SELECT @Age = DATEDIFF(YEAR, @BirthDate, @CurrentDate) 
+		- CASE  WHEN ((MONTH(@BirthDate) * 100 + DAY(@BirthDate)) > (MONTH(@CurrentDate) * 100 + DAY(@CurrentDate))) 
+				THEN  1
+				ELSE
+					0
+			END;
+	RETURN @Age;
+
+END;
