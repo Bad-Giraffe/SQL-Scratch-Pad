@@ -1,0 +1,25 @@
+CREATE FUNCTION [dbo].[RemoveNonNumericCharacters] (
+						 @String VARCHAR(MAX)
+						 )
+RETURNS VARCHAR(MAX)
+AS
+	BEGIN
+
+		DECLARE @KeepValues AS VARCHAR(50)
+		;
+
+
+		SET @KeepValues = '%[^0-9]%'
+		;
+
+
+		WHILE PATINDEX(@KeepValues, @String) > 0
+		SET @String = STUFF(@String, PATINDEX(@KeepValues, @String), 1, '')
+		;
+
+
+		RETURN @String
+		;
+	END
+;
+GO
