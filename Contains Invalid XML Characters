@@ -1,0 +1,51 @@
+CREATE FUNCTION [dbo].[ContainsInvalidXMLCharacters]
+(
+	@Text VARCHAR(MAX)
+)
+RETURNS BIT
+AS
+BEGIN
+
+	-- List of invalid characters from https://stackoverflow.com/questions/28365316/sql-server-replace-invalid-xml-characters-from-a-varcharmax-field
+  
+  
+	IF @Text LIKE '%' + CHAR(0x0) + '%'
+	OR @Text LIKE '%' + CHAR(0x1) + '%'
+	OR @Text LIKE '%' + CHAR(0x2) + '%'
+	OR @Text LIKE '%' + CHAR(0x3) + '%'
+	OR @Text LIKE '%' + CHAR(0x4) + '%'
+	OR @Text LIKE '%' + CHAR(0x5) + '%'
+	OR @Text LIKE '%' + CHAR(0x6) + '%'
+	OR @Text LIKE '%' + CHAR(0x7) + '%'
+	OR @Text LIKE '%' + CHAR(0x8) + '%'
+	OR @Text LIKE '%' + CHAR(0x9) + '%'
+	OR @Text LIKE '%' + CHAR(0xa) + '%'
+	OR @Text LIKE '%' + CHAR(0xb) + '%'
+	OR @Text LIKE '%' + CHAR(0xc) + '%'
+	OR @Text LIKE '%' + CHAR(0xd) + '%'
+	OR @Text LIKE '%' + CHAR(0xe) + '%'
+	OR @Text LIKE '%' + CHAR(0xf) + '%'
+	OR @Text LIKE '%' + CHAR(0x10) + '%'
+	OR @Text LIKE '%' + CHAR(0x11) + '%'
+	OR @Text LIKE '%' + CHAR(0x12) + '%'
+	OR @Text LIKE '%' + CHAR(0x13) + '%'
+	OR @Text LIKE '%' + CHAR(0x14) + '%'
+	OR @Text LIKE '%' + CHAR(0x15) + '%'
+	OR @Text LIKE '%' + CHAR(0x16) + '%'
+	OR @Text LIKE '%' + CHAR(0x17) + '%'
+	OR @Text LIKE '%' + CHAR(0x18) + '%'
+	OR @Text LIKE '%' + CHAR(0x19) + '%'
+	OR @Text LIKE '%' + CHAR(0x1a) + '%'
+	OR @Text LIKE '%' + CHAR(0x1b) + '%'
+	OR @Text LIKE '%' + CHAR(0x1c) + '%'
+	OR @Text LIKE '%' + CHAR(0x1d) + '%'
+	OR @Text LIKE '%' + CHAR(0x1e) + '%'
+	OR @Text LIKE '%' + CHAR(0x1f) + '%'
+	OR @Text LIKE '%' + CHAR(0x7f) + '%'
+	BEGIN
+		RETURN 1;
+	END;
+	ELSE
+	BEGIN
+		RETURN 0;
+	END;
