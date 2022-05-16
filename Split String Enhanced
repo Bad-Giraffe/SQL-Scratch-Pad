@@ -1,0 +1,57 @@
+CREATE FUNCTION [dbo].[SplitEnhanced]
+(
+	@String NTEXT
+,	@Delimiter CHAR(1)
+)
+RETURNS @Results TABLE
+(
+	[ROW] INT IDENTITY
+,	[Items] NVARCHAR(MAX)
+)
+AS
+BEGIN
+	DECLARE
+		@STARTINDEX INT
+	,	@STRINGLEN INT
+	SET @STRINGLEN = DATALENGTH(ISNULL(@String, N'')) / 2;
+	SET @STARTINDEX = 1;
+
+	DECLARE @SLICE NVARCHAR(MAX);
+	DECLARE @SUBSTR NVARCHAR(MAX);
+
+	SET @SLICE = N'';
+
+	WHILE @STARTINDEX < @STRINGLEN + 1
+	BEGIN
+
+		SET @SUBSTR = SUBSTRING(@String, @STARTINDEX, 1);
+
+		IF @SUBSTR = @Delimiter
+		BEGIN
+			IF @SLICE <> N''
+				INSERT INTO @Results
+				(
+					[Items]
+				)
+				VALUES
+				(
+					@SLICE
+				);
+			SET @SLICE = N'';
+		END;
+		ELSE
+			SET @SLICE = @SLICE + @SUBSTR;
+
+		SET @STARTINDEX = @STARTINDEX + 1;
+	END;
+	IF LEN(@SLICE) > 0
+		INSERT INTO @Results
+		(
+			[Items]
+		)
+		VALUES
+		(
+			@SLICE
+		);
+	RETURN;
+END;
