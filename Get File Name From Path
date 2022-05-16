@@ -1,0 +1,16 @@
+CREATE FUNCTION [dbo].[GetFilenameFromPath]
+(
+	@FilePath VARCHAR(256)
+)
+RETURNS VARCHAR(256)
+AS
+BEGIN
+	DECLARE @LastPathSeparatorIndex INT = PATINDEX('%[\/]%', REVERSE(@FilePath));
+
+	-- Handle a NULL @Filename or a @Filename with no slashes
+	IF @LastPathSeparatorIndex IS NULL
+	OR @LastPathSeparatorIndex <= 0
+		RETURN @FilePath;
+
+	RETURN RIGHT(@FilePath, @LastPathSeparatorIndex - 1);
+END;
